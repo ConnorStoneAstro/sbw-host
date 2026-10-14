@@ -1,0 +1,21 @@
+# tokens: never commit
+.rsp_token
+.rsp_image_token
+.rsp_image_tap_token
+.rsp*token*
+*.token
+
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# outputs of the example scripts
+examples/output/
+review/
+*.ecsv
+*.fits
+hats_*/

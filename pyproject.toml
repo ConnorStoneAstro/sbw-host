@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hostassoc"
+version = "0.1.0"
+description = "SBW (surface-brightness-weighted) host-galaxy association for Rubin LSST transients, with a DLR comparison"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Connor Stone", email = "connor.stone@utoronto.ca" }]
+keywords = ["astronomy", "supernovae", "host galaxy", "Rubin", "LSST", "TAP", "Sersic"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "astropy>=5.3",
+    "matplotlib>=3.7",
+    "pyvo>=1.5",
+    "requests>=2.28",
+]
+
+[project.optional-dependencies]
+lsdb = ["lsdb>=0.11", "pandas>=2.0", "pyarrow>=14"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+hostassoc = "hostassoc.__main__:main"
+hostassoc-batch = "hostassoc.batch:main"
+hostassoc-review = "hostassoc.review:main"
+
+[project.urls]
+Homepage = "https://github.com/ConnorStoneAstro/hostassoc"
+Issues = "https://github.com/ConnorStoneAstro/hostassoc/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+hostassoc = ["data/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["network: requires RSP TAP access (run with --run-network)"]
