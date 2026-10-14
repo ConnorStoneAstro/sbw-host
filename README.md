@@ -37,7 +37,7 @@ git clone https://github.com/ConnorStoneAstro/sbw-host.git && cd sbw-host
 pip install -e ".[dev]"            # add ,lsdb for the HATS backend
 ```
 
-Python ≥ 3.10; depends on numpy, scipy, astropy, matplotlib, pyvo and requests.
+Python ≥ 3.12 (lsdb needs ≥ 3.11); depends on numpy, scipy, astropy, matplotlib, pyvo and requests.
 
 ### Rubin Science Platform token
 

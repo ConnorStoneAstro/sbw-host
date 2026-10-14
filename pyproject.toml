@@ -7,12 +7,14 @@ name = "sbw-host"
 version = "0.1.0"
 description = "SBW (surface-brightness-weighted) host-galaxy association for Rubin LSST transients, with a DLR comparison"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 license = { file = "LICENSE" }
 authors = [{ name = "Connor Stone", email = "connor.stone@utoronto.ca" }]
 keywords = ["astronomy", "supernovae", "host galaxy", "Rubin", "LSST", "TAP", "Sersic"]
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: MIT License",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Astronomy",
