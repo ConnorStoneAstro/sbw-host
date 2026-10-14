@@ -15,7 +15,7 @@ many orders of magnitude (Figure 3).
 
 Author: Connor Stone (connor.stone@utoronto.ca). Analysis code and figures:
 `host_association/report/` (`make_report_figures.py`); the mixture reproduction is
-in `host_association/hostassoc/sersic_mix.py`. Code references below are to the
+in `host_association/sbw_host/sersic_mix.py`. Code references below are to the
 `main` branches as of 2026-10-06 (commits: gauss2d_fit `4e61e667d684`, gauss2d
 `b90b002fd1c7`, multiprofit `1988d86b4c72`, meas_extensions_multiprofit
 `91873aba28fa`, sdm_schemas `016e612ca712`).
@@ -151,7 +151,7 @@ cd host_association
 # needs .rsp_token (scope read:tap) and .rsp_image_token (scope read:image)
 PYTHONPATH=. python report/make_report_figures.py
 ```
-`hostassoc/sersic_mix.py` holds the knot table (parsed from `sersicmix.cc`) and the
+`sbw_host/sersic_mix.py` holds the knot table (parsed from `sersicmix.cc`) and the
 mixture evaluation; `half_light_factor(n)` returns R_half/reff. The AstroPhot models
 use its `sersic galaxy model` with I_e set from the total flux and the PSF supplied
 as a `PSFImage`; the orientation of the AstroPhot and mixture renders was checked to

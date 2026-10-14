@@ -1,8 +1,8 @@
 """Visual review of SBW / DLR disagreements in a batch output table.
 
-    python -m hostassoc.review hosts.csv --token .rsp_image_tap_token --n 20 --out review/
+    python -m sbw_host.review hosts.csv --token .rsp_image_tap_token --n 20 --out review/
 
-Reads the wide table written by ``associate_many`` / ``python -m hostassoc.batch``
+Reads the wide table written by ``associate_many`` / ``python -m sbw_host.batch``
 (csv, ecsv, fits, parquet, ...), selects random rows where the DLR candidate
 (``dlr_host_objectId``) differs from the SBW top host (``host_1_objectId``),
 downloads a deep_coadd cutout around each transient and saves one figure per
@@ -140,8 +140,8 @@ def review_figure(row, ranks, fov_arcsec=60.0, band="r", dataset="dp2", service=
 
 
 def main(argv=None):
-    p = argparse.ArgumentParser(prog="hostassoc-review", description=__doc__.split("\n\n")[1])
-    p.add_argument("table", help="wide output table from hostassoc.batch (csv, ecsv, fits, parquet, ...)")
+    p = argparse.ArgumentParser(prog="sbw-host-review", description=__doc__.split("\n\n")[1])
+    p.add_argument("table", help="wide output table from sbw_host.batch (csv, ecsv, fits, parquet, ...)")
     p.add_argument("--token", default=None, help="RSP token string or path to a token file (needs read:tap and read:image)")
     p.add_argument("--n", type=int, default=20, help="number of random disagreements to review")
     p.add_argument("--seed", type=int, default=0)
@@ -159,7 +159,7 @@ def main(argv=None):
     dataset = a.dataset or tab.meta.get("dataset", "dp2")
     ranks = host_columns(tab)
     if not ranks or "dlr_host_objectId" not in tab.colnames:
-        sys.exit("input does not look like a hostassoc.batch wide table (needs host_i_objectId and dlr_host_objectId)")
+        sys.exit("input does not look like a sbw_host.batch wide table (needs host_i_objectId and dlr_host_objectId)")
     sel = select_disagreements(tab, n=a.n, seed=a.seed, include_dlr_none=a.include_dlr_none, dlr_max=a.dlr_max)
     print(f"{sel.meta['n_disagreements_total']} disagreements in {len(tab)} rows; reviewing {len(sel)}")
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)

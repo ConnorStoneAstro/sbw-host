@@ -2,8 +2,8 @@ import numpy as np
 import pytest
 from astropy.table import Table
 
-from hostassoc import associate as A
-from hostassoc import sersic as S
+from sbw_host import associate as A
+from sbw_host import sersic as S
 
 from .helpers import ASEC, DEC0, RA0, make_cands
 

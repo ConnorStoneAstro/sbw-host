@@ -6,7 +6,7 @@ it from the real r-band cutout and report chi^2 per pixel inside 3 catalogue ref
 Models compared:
 
 * ``mixture``  - MultiProFit's 4-Gaussian Sersic with sigma_k = knot_k * sersic_reff
-                 (what ``hostassoc`` uses)
+                 (what ``sbw_host`` uses)
 * ``analytic`` - a true Sersic profile with R_eff = sersic_reff (what the column
                  names suggest; it is too compact)
 
@@ -24,9 +24,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import fftconvolve
 
-from hostassoc import fetch_cutout, get_tap_service
-from hostassoc import sersic as S
-from hostassoc import sersic_mix as SM
+from sbw_host import fetch_cutout, get_tap_service
+from sbw_host import sersic as S
+from sbw_host import sersic_mix as SM
 
 
 def gauss2d(dx, dy, cov):

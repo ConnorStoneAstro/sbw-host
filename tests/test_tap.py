@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from hostassoc import tap
+from sbw_host import tap
 
 
 def test_explicit_and_env_token(monkeypatch):

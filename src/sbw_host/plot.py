@@ -86,7 +86,7 @@ def plot_association(result, image=None, wcs=None, size_arcsec=None, ax=None,
 
     Parameters
     ----------
-    result : Table from :func:`hostassoc.associate_host`.
+    result : Table from :func:`sbw_host.associate_host`.
     image, wcs : optional image array and matching celestial WCS.  If omitted the
         candidates' Sersic models are rendered instead.
     size_arcsec : field of view for the model render (default 2.4 x search radius).

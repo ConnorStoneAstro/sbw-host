@@ -20,8 +20,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from hostassoc import associate_host, get_tap_service
-from hostassoc.plot import method_summary, plot_with_best_image
+from sbw_host import associate_host, get_tap_service
+from sbw_host.plot import method_summary, plot_with_best_image
 
 CATEGORY_TEXT = {
     "twins": "two similar galaxies tie in d_DLR (within 20%); SBW splits the light",

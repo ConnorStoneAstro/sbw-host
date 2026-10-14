@@ -208,7 +208,7 @@ def compute_association(cands: Table, ra: float, dec: float, band: str,
         Drop candidates flagged ``suspect`` (below) before computing probabilities.
     profile : {'mixture', 'analytic'}
         ``'mixture'`` (default) evaluates the Gaussian-mixture profile actually
-        fitted by MultiProFit (see :mod:`hostassoc.sersic_mix`), with the catalogue
+        fitted by MultiProFit (see :mod:`sbw_host.sersic_mix`), with the catalogue
         ``reff`` as the mixture scale parameter.  ``'analytic'`` evaluates a true
         Sersic profile with R_eff = ``reff``; it is too compact in the core and far
         too extended in the wings, and is kept only for comparison.
@@ -449,7 +449,7 @@ def associate_host(ra: float, dec: float, band: str = "r", radius_arcsec: float 
     service : pyvo.dal.TAPService, optional
         Reuse an existing authenticated service.
     token : str, optional
-        RSP token (otherwise resolved by :func:`hostassoc.tap.load_token`).
+        RSP token (otherwise resolved by :func:`sbw_host.tap.load_token`).
     return_raw : bool
         Also return the unfiltered cone-search rows (useful for plotting the
         point sources and failed fits that were rejected).

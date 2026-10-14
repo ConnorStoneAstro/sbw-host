@@ -11,7 +11,7 @@ First packaged release, collecting the work done against Rubin DP2 in October 20
   Gaussian mixture the pipeline actually fits, with the half-light radius
   `1.386 x reff` convention (see `docs/sersic_reff_report/`).
 - `suspect` flag for deblend-halo phantom fits; band fallback (r, i, g, z, u, y).
-- Batch mode (`associate_many`, `hostassoc-batch`) with grouped asynchronous TAP
+- Batch mode (`associate_many`, `sbw-host-batch`) with grouped asynchronous TAP
   queries or an LSDB/HATS backend, streaming chunk by chunk.
-- Diagnostic figures on real deep_coadd cutouts; `hostassoc-review` for random
+- Diagnostic figures on real deep_coadd cutouts; `sbw-host-review` for random
   SBW/DLR disagreements in a batch table.

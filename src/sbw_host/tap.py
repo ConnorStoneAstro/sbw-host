@@ -60,7 +60,7 @@ def load_token(token: str | None = None) -> str:
         return found
     raise RuntimeError(
         "No RSP token found. Pass token=..., set RSP_TOKEN, or save the token in a file named "
-        ".rsp_image_tap_token (or .rsp_token) in the working directory, next to the hostassoc "
+        ".rsp_image_tap_token (or .rsp_token) in the working directory, next to the sbw_host "
         "package, or in your home directory. Create one at https://data.lsst.cloud "
         "(Account -> Security tokens, scopes read:tap and read:image)."
     )

@@ -3,7 +3,7 @@ import os
 import numpy as np
 from astropy.table import Table
 
-from hostassoc import review as R
+from sbw_host import review as R
 
 
 def make_wide():

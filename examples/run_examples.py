@@ -17,8 +17,8 @@ import matplotlib
 matplotlib.use("Agg")
 import numpy as np
 
-from hostassoc import associate_host, get_tap_service
-from hostassoc.plot import method_summary, plot_with_best_image
+from sbw_host import associate_host, get_tap_service
+from sbw_host.plot import method_summary, plot_with_best_image
 
 FIELDS = {"ECDFS": (53.13, -28.10), "COSMOS": (150.12, 2.21), "EDFS": (59.10, -48.73)}
 
@@ -35,7 +35,7 @@ def random_galaxies(service, ra, dec, n, rng, dataset="dp2", r_deg=0.03):
 
 def offset_position(row, rng):
     """Random point at 0.3-2.5 R_eff from the galaxy along a random direction."""
-    from hostassoc import sersic as S
+    from sbw_host import sersic as S
     rx, ry, rho = (float(row[c]) * S.PIXEL_SCALE_ARCSEC for c in ("sersic_reff_x", "sersic_reff_y", "sersic_rho"))
     theta = rng.uniform(0, 2 * np.pi)
     m_target = rng.uniform(0.3, 2.5)

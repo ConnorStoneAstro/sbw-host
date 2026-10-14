@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from hostassoc import sersic as S
+from sbw_host import sersic as S
 
 
 def test_bn_known_values():

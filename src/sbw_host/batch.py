@@ -4,19 +4,19 @@ Instead of one TAP cone search per transient (~3.5 s each), transients are group
 into sky cells, one asynchronous regional query is issued per occupied cell (a few
 run concurrently), and each transient's candidates are then selected from the
 downloaded rows with a KD-tree and passed to the same
-:func:`hostassoc.associate.compute_association` as the single-object path, so all
+:func:`sbw_host.associate.compute_association` as the single-object path, so all
 columns, flags and conventions are identical.  Cells holding only one or two
 transients use ordinary small cone searches instead.
 
 Python::
 
-    from hostassoc.batch import associate_many
+    from sbw_host.batch import associate_many
     wide = associate_many(ra, dec, keys=dia_object_ids, n_hosts=3)
     wide, long = associate_many(ra, dec, keys=..., n_hosts=3, return_long=True)
 
 Command line::
 
-    python -m hostassoc.batch transients.csv --key-col diaObjectId --ra-col ra --dec-col dec \\
+    python -m sbw_host.batch transients.csv --key-col diaObjectId --ra-col ra --dec-col dec \\
         --n-hosts 3 --out hosts.ecsv --long hosts_long.ecsv
 
 Backends: ``backend="tap"`` (default; the RSP TAP service, grouped regional
@@ -212,7 +212,7 @@ def lsdb_open(lsdb_path=LSDB_DP2_OBJECT_PATH, band: str = "r", model: str = DEFA
                 raise RuntimeError(
                     f"{lsdb_path} has no '{model}' model columns ({model}_reff_x etc.). "
                     f"Columns with similar names: {near[:30] or 'none'}. "
-                    "Use `hostassoc-batch --lsdb-list-columns [--lsdb-path ...]` to list all columns.")
+                    "Use `sbw-host-batch --lsdb-list-columns [--lsdb-path ...]` to list all columns.")
         cols = list(model_columns(band, model, bands)) + [c for c in _OPTIONAL_COLUMNS if c in have]
         missing = [c for c in cols if c not in have]
         if missing:
@@ -390,8 +390,8 @@ def associate_many(ra, dec, keys=None, n_hosts: int = 3, band: str = "r", radius
     band_fallback : bool
         If a transient has no candidate in ``band`` (usually no coverage in that
         band), try the other bands in the order r, i, g, z, u, y and record the band
-        used in ``band_used`` (see :func:`hostassoc.associate.associate_bands`).
-    Other arguments are passed to :func:`hostassoc.associate.compute_association`.
+        used in ``band_used`` (see :func:`sbw_host.associate.associate_bands`).
+    Other arguments are passed to :func:`sbw_host.associate.compute_association`.
 
     Returns
     -------
@@ -485,7 +485,7 @@ def associate_many(ra, dec, keys=None, n_hosts: int = 3, band: str = "r", radius
 # --------------------------------------------------------------------------- CLI
 def main(argv=None):
     import argparse
-    p = argparse.ArgumentParser(prog="hostassoc-batch",
+    p = argparse.ArgumentParser(prog="sbw-host-batch",
                                 description="Batch SBW host association for a table of transient positions.")
     p.add_argument("positions", nargs="?", default=None,
                    help="input table (csv, ecsv, fits, parquet, ... anything astropy Table.read understands)")

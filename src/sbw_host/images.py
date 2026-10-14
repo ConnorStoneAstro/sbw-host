@@ -46,7 +46,7 @@ def render_model_image(result, wcs: WCS, shape: tuple[int, int],
                        psf_fwhm_arcsec: float | None = 0.8) -> np.ndarray:
     """Render the candidates' Sersic models (nJy per pixel) onto ``wcs``.
 
-    ``result`` is the table from :func:`hostassoc.associate_host`.  An optional
+    ``result`` is the table from :func:`sbw_host.associate_host`.  An optional
     Gaussian blur mimics seeing so the render resembles a coadd.
     """
     ny, nx = shape
@@ -102,7 +102,7 @@ def fetch_cutout(ra: float, dec: float, size_arcsec: float, band: str = "r",
     """Return ``(data, wcs)`` for a deep_coadd cutout of side ``size_arcsec``.
 
     The ObsCore lookup uses the TAP service (``read:tap``); DataLink and the SODA
-    cutout use ``image_token`` (``read:image``, see :func:`hostassoc.tap.load_image_token`).
+    cutout use ``image_token`` (``read:image``, see :func:`sbw_host.tap.load_image_token`).
     Tries the DataLink SODA descriptor first, then the direct ``/api/cutout/sync`` URL.
     """
     import requests

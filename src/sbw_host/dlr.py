@@ -26,7 +26,7 @@ def d_dlr(du, dv, a, b, phi_deg):
     """d_DLR for offsets (du, dv) [arcsec] from a galaxy with axes a, b and angle phi.
 
     ``phi_deg`` is the major-axis angle measured counter-clockwise from +u toward
-    +v (the same convention as :func:`hostassoc.sersic.ellipse_axes`).
+    +v (the same convention as :func:`sbw_host.sersic.ellipse_axes`).
     """
     du, dv = np.asarray(du, float), np.asarray(dv, float)
     a = np.maximum(np.asarray(a, float), 1e-6)

@@ -1,6 +1,6 @@
-# hostassoc — SBW host-galaxy association for Rubin LSST transients
+# sbw-host — SBW host-galaxy association for Rubin LSST transients
 
-`hostassoc` associates transients with host galaxies using the Sérsic-type model
+`sbw_host` associates transients with host galaxies using the Sérsic-type model
 fits published in the Rubin LSST Object table. For a transient position it
 evaluates every nearby galaxy's model surface brightness **at the transient** and
 turns those into probabilities (SBW, *surface-brightness-weighted* association).
@@ -10,7 +10,7 @@ missing, and scales from one object to hundreds of thousands via grouped TAP
 queries or an LSDB/HATS copy of the catalogue.
 
 ```python
-from hostassoc import associate_host
+from sbw_host import associate_host
 
 res = associate_host(53.12934, -28.12088, band="r", radius_arcsec=30)
 print(res["objectId", "p_sbw", "frac_light_beyond", "d_dlr", "sep_arcsec", "mag", "suspect"])
@@ -31,9 +31,9 @@ large faint galaxy 2.3″ away because it is closer in units of its own radius.*
 ## Installation
 
 ```bash
-pip install git+https://github.com/ConnorStoneAstro/hostassoc.git
+pip install git+https://github.com/ConnorStoneAstro/sbw-host.git
 # or, for development
-git clone https://github.com/ConnorStoneAstro/hostassoc.git && cd hostassoc
+git clone https://github.com/ConnorStoneAstro/sbw-host.git && cd sbw-host
 pip install -e ".[dev]"            # add ,lsdb for the HATS backend
 ```
 
@@ -95,7 +95,7 @@ Two facts about these fits matter for anyone using the columns, and are built in
 (details and evidence in [`docs/sersic_reff_report/REPORT.md`](docs/sersic_reff_report/REPORT.md)):
 
 1. The fitted model is a 4-Gaussian mixture (gauss2d_fit), not an analytic
-   Sérsic; its wings are Gaussian. `hostassoc` evaluates exactly that mixture
+   Sérsic; its wings are Gaussian. `sbw_host` evaluates exactly that mixture
    (`sersic_mix.py`, knot table from the pipeline source).
 2. The catalogue `*_reff` is the mixture's scale parameter, not its half-light
    radius: the model's half-light radius is **1.386 × reff** for every n. Tables
@@ -129,7 +129,7 @@ associate_host(ra, dec, plot="host.png")
 ```
 
 ```bash
-hostassoc 53.12934 -28.12088 --band r --radius 30 --plot host.png --csv host.ecsv
+sbw-host 53.12934 -28.12088 --band r --radius 30 --plot host.png --csv host.ecsv
 ```
 
 Columns (per candidate): `objectId, ra, dec, sep_arcsec, du_arcsec, dv_arcsec,
@@ -147,14 +147,14 @@ and DLR: ties, size versus brightness, orientation, dwarfs in projection, hostle
 ## Many transients
 
 ```python
-from hostassoc import associate_many
+from sbw_host import associate_many
 
 wide = associate_many(ra, dec, keys=dia_object_ids, n_hosts=3)
 wide, long = associate_many(ra, dec, keys=dia_object_ids, n_hosts=3, return_long=True)
 ```
 
 ```bash
-hostassoc-batch transients.csv --key-col diaObjectId --ra-col ra --dec-col dec \
+sbw-host-batch transients.csv --key-col diaObjectId --ra-col ra --dec-col dec \
     --n-hosts 3 --out hosts.ecsv --long hosts_long.ecsv
 ```
 
@@ -181,8 +181,8 @@ clustered lists; isolated transients fall back to cone searches.
 `/global/cfs/cdirs/lsst/shared/rubin/DP2/HATS/object_collection`):
 
 ```bash
-pip install "hostassoc[lsdb]"
-hostassoc-batch transients.csv --key-col diaObjectId --n-hosts 3 --lsdb \
+pip install "sbw_host[lsdb]"
+sbw-host-batch transients.csv --key-col diaObjectId --n-hosts 3 --lsdb \
     [--lsdb-path /path/to/object_collection] [--lsdb-workers 4] [--lsdb-chunk 2000] --out hosts.ecsv
 ```
 
@@ -195,14 +195,14 @@ partition touched is read into memory while processed, hence the default of 4
 Dask threads; raise it on a compute node, or create your own `dask.distributed`
 Client (detected automatically) with explicit memory limits. HATS collections may
 expose only a default column subset; the code reads `all_columns` and opens the
-catalogue with exactly the columns it needs (`hostassoc-batch --lsdb-list-columns`
+catalogue with exactly the columns it needs (`sbw-host-batch --lsdb-list-columns`
 shows them). Both backends give identical results for the same catalogue
 contents.
 
 ### Reviewing disagreements
 
 ```bash
-hostassoc-review hosts.csv --token .rsp_image_tap_token --n 20 --out review/
+sbw-host-review hosts.csv --token .rsp_image_tap_token --n 20 --out review/
 ```
 
 picks random rows of a batch table where the DLR candidate differs from the SBW

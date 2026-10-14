@@ -27,8 +27,8 @@ from astropy.table import Table
 from astropy.visualization import AsinhStretch, ImageNormalize
 from scipy.ndimage import gaussian_filter
 
-from hostassoc import sersic as S
-from hostassoc.associate import compute_association
+from sbw_host import sersic as S
+from sbw_host.associate import compute_association
 
 PIX = 0.2          # arcsec / pixel
 FOV = 40.0         # arcsec on a side

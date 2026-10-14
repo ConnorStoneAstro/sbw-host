@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 
-from hostassoc import sersic as S
-from hostassoc import sersic_mix as SM
+from sbw_host import sersic as S
+from sbw_host import sersic_mix as SM
 
 
 @pytest.mark.parametrize("n", [0.5, 0.73, 1.0, 2.5, 4.0, 6.0])

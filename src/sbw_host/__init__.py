@@ -15,7 +15,7 @@ __all__ = [
 
 
 def __getattr__(name):
-    # lazy, so that ``python -m hostassoc.batch`` does not import batch twice
+    # lazy, so that ``python -m sbw_host.batch`` does not import batch twice
     if name == "associate_many":
         from .batch import associate_many
         return associate_many

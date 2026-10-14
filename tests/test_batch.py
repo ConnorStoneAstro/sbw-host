@@ -2,8 +2,8 @@ import numpy as np
 import pytest
 from astropy.table import Table
 
-from hostassoc import batch as B
-from hostassoc.associate import compute_association
+from sbw_host import batch as B
+from sbw_host.associate import compute_association
 from .helpers import ASEC, DEC0, RA0, make_cands
 
 
@@ -65,7 +65,7 @@ def test_associate_many_offline(monkeypatch):
     monkeypatch.setattr(B, "resolve_model", lambda m, s, d: "sersic")
     monkeypatch.setattr(B, "query_region", lambda service, ra, dec, r, band, dataset, model, **kw: gal)
     def fake_cone(ra, dec, rad, band, dataset, service=None, model=None, **kw):
-        du, dv = __import__("hostassoc.sersic", fromlist=["x"]).sky_offsets(ra, dec, gal["coord_ra"], gal["coord_dec"])
+        du, dv = __import__("sbw_host.sersic", fromlist=["x"]).sky_offsets(ra, dec, gal["coord_ra"], gal["coord_dec"])
         return gal[np.hypot(du, dv) < rad]
     monkeypatch.setattr(B, "query_candidates", fake_cone)
     ra = RA0 + np.array([0, 20, 40, 2000]) * ASEC      # three near the galaxies, one far away
@@ -82,7 +82,7 @@ def test_associate_many_offline(monkeypatch):
 def test_lsdb_backend_matches_local_computation():
     lsdb = pytest.importorskip("lsdb")
     import pandas as pd
-    from hostassoc import sersic as S
+    from sbw_host import sersic as S
     # synthetic "Object table" of 5 galaxies, exponential-fit columns
     base = make_cands([{"ra": RA0 + k * 20 * ASEC, "dec": DEC0, "flux": 1e4 * (k + 1)} for k in range(5)])
     gal = Table({c.replace("sersic", "exponential"): base[c] for c in base.colnames if c != "sersic_index"})

@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from hostassoc import dlr as D
+from sbw_host import dlr as D
 
 
 def test_dlr_circular_is_separation_over_radius():

@@ -29,9 +29,9 @@ import warnings
 import numpy as np
 from astropy.table import Table
 
-from hostassoc import sersic as S
-from hostassoc.associate import DEFAULT_MODEL, build_query, compute_association, available_columns, _OPTIONAL_COLUMNS
-from hostassoc.tap import get_tap_service
+from sbw_host import sersic as S
+from sbw_host.associate import DEFAULT_MODEL, build_query, compute_association, available_columns, _OPTIONAL_COLUMNS
+from sbw_host.tap import get_tap_service
 
 FIELDS = {"ECDFS": (53.13, -28.10), "COSMOS": (150.12, 2.21), "EDFS": (59.10, -48.73)}
 RADIUS = 30.0

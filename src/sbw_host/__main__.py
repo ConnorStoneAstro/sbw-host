@@ -1,10 +1,10 @@
 """Command-line host association.
 
-    python -m hostassoc RA DEC [--band r] [--radius 30] [--max-hosts N] [--dataset dp2]
+    python -m sbw_host RA DEC [--band r] [--radius 30] [--max-hosts N] [--dataset dp2]
                               [--plot out.png] [--csv out.ecsv]
 
 Example:
-    python -m hostassoc 53.12934 -28.12088 --band r --radius 30 --plot host.png
+    python -m sbw_host 53.12934 -28.12088 --band r --radius 30 --plot host.png
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ from .associate import associate_host
 
 
 def main(argv=None):
-    p = argparse.ArgumentParser(prog="hostassoc", description=__doc__.split("\n\n")[0])
+    p = argparse.ArgumentParser(prog="sbw-host", description=__doc__.split("\n\n")[0])
     p.add_argument("ra", type=float, help="transient RA (deg, ICRS)")
     p.add_argument("dec", type=float, help="transient Dec (deg, ICRS)")
     p.add_argument("--band", default="r", choices=list("ugrizy"))

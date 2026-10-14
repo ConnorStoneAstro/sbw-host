@@ -7,7 +7,7 @@ catalogue parameters against the real r-band deep_coadd cutout:
      q = reff_minor/reff_major, flux = r_sersicFlux
   B. AstroPhot Sersic with R_e = (mixture half-light factor ~1.39) x sersic_reff_major
   C. The Gaussian-mixture "Sersic" actually used by MultiProFit / gauss2d_fit:
-     4 Gaussians, sigma_k = knot_k(n) * sersic_reff  (hostassoc.sersic_mix)
+     4 Gaussians, sigma_k = knot_k(n) * sersic_reff  (sbw_host.sersic_mix)
 
 The PSF is the two-Gaussian PSF model stored in the Object table
 ({band}_psfModel_TwoGaussian_*), i.e. the PSF MultiProFit convolved with.
@@ -30,9 +30,9 @@ import torch
 from scipy.special import gammaincinv, gammaln
 
 import astrophot as ap
-from hostassoc import fetch_cutout, get_tap_service
-from hostassoc import sersic as S
-from hostassoc import sersic_mix as SM
+from sbw_host import fetch_cutout, get_tap_service
+from sbw_host import sersic as S
+from sbw_host import sersic_mix as SM
 
 OUT = pathlib.Path(__file__).resolve().parent.parent / "docs" / "sersic_reff_report"
 PIX = S.PIXEL_SCALE_ARCSEC

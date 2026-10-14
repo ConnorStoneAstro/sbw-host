@@ -5,8 +5,8 @@ import pytest
 
 pytestmark = pytest.mark.network
 
-from hostassoc import associate_host, get_tap_service, load_token  # noqa: E402
-from hostassoc.plot import plot_association  # noqa: E402
+from sbw_host import associate_host, get_tap_service, load_token  # noqa: E402
+from sbw_host.plot import plot_association  # noqa: E402
 
 
 @pytest.fixture(scope="module")
@@ -63,7 +63,7 @@ def test_plot_runs(service, tmp_path):
 
 def test_cutout_matches_catalogue_geometry(service):
     """Real deep_coadd cutout: WCS is north-up/east-left and the field centre is right."""
-    from hostassoc import fetch_cutout, load_image_token
+    from sbw_host import fetch_cutout, load_image_token
     try:
         load_image_token()
     except RuntimeError as e:
@@ -83,8 +83,8 @@ def test_ellipse_orientation_matches_image_moments(service):
     This pins down the pixel-frame convention (+x West, +y North) and shows that
     ``sersic_theta`` has the opposite sign.
     """
-    from hostassoc import fetch_cutout, load_image_token
-    from hostassoc import sersic as S
+    from sbw_host import fetch_cutout, load_image_token
+    from sbw_host import sersic as S
     try:
         load_image_token()
     except RuntimeError as e:
@@ -124,7 +124,7 @@ def test_plot_option_returns_figure(service, tmp_path):
 
 
 def test_batch_matches_single_object_path(service):
-    from hostassoc import associate_many
+    from sbw_host import associate_many
     rng = np.random.default_rng(21)
     ra = np.r_[53.13 + rng.uniform(-0.03, 0.03, 5), 150.12]        # one regional cell + one single cone
     dec = np.r_[-28.10 + rng.uniform(-0.03, 0.03, 5), 2.21]

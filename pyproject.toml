@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "hostassoc"
+name = "sbw-host"
 version = "0.1.0"
 description = "SBW (surface-brightness-weighted) host-galaxy association for Rubin LSST transients, with a DLR comparison"
 readme = "README.md"
@@ -31,19 +31,19 @@ lsdb = ["lsdb>=0.11", "pandas>=2.0", "pyarrow>=14"]
 dev = ["pytest>=7"]
 
 [project.scripts]
-hostassoc = "hostassoc.__main__:main"
-hostassoc-batch = "hostassoc.batch:main"
-hostassoc-review = "hostassoc.review:main"
+sbw-host = "sbw_host.__main__:main"
+sbw-host-batch = "sbw_host.batch:main"
+sbw-host-review = "sbw_host.review:main"
 
 [project.urls]
-Homepage = "https://github.com/ConnorStoneAstro/hostassoc"
-Issues = "https://github.com/ConnorStoneAstro/hostassoc/issues"
+Homepage = "https://github.com/ConnorStoneAstro/sbw-host"
+Issues = "https://github.com/ConnorStoneAstro/sbw-host/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-hostassoc = ["data/*.json"]
+sbw_host = ["data/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
