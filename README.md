@@ -181,7 +181,7 @@ clustered lists; isolated transients fall back to cone searches.
 `/global/cfs/cdirs/lsst/shared/rubin/DP2/HATS/object_collection`):
 
 ```bash
-pip install "sbw_host[lsdb]"
+pip install "sbw-host[lsdb]"
 sbw-host-batch transients.csv --key-col diaObjectId --n-hosts 3 --lsdb \
     [--lsdb-path /path/to/object_collection] [--lsdb-workers 4] [--lsdb-chunk 2000] --out hosts.ecsv
 ```
