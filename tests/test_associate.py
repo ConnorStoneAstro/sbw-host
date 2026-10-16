@@ -184,3 +184,34 @@ def test_band_fallback_order_and_use():
     # query carries the fallback bands' columns
     q = A.build_query(10.0, -5.0, 36.0, "r", bands=A.fallback_order("r"))
     assert all(f"{b}_exponentialFlux" in q for b in "ugrizy")
+
+
+def test_compute_association_regression_against_pre_core_values():
+    """Outputs recorded before compute_association was refactored onto sbw_host.core."""
+    rows = [
+        {"ra": RA0 + 3 * ASEC, "dec": DEC0 + 1 * ASEC, "rx": 6.0, "ry": 3.0, "rho": 0.4, "n": 1.0, "flux": 2e4},
+        {"ra": RA0 - 8 * ASEC, "dec": DEC0 + 5 * ASEC, "rx": 12.0, "ry": 10.0, "rho": -0.2, "n": 2.5, "flux": 8e4},
+        {"ra": RA0 + 1 * ASEC, "dec": DEC0 - 12 * ASEC, "rx": 4.0, "ry": 4.5, "rho": 0.1, "n": 0.7, "flux": 5e3},
+        {"ra": RA0 + 20 * ASEC, "dec": DEC0 + 20 * ASEC, "rx": 30.0, "ry": 15.0, "rho": 0.0, "n": 4.0, "flux": 3e5},
+    ]
+    expected = {
+        "mixture": {
+            "p_sbw": [0.6671202539752984, 0.26166282060979446, 0.07121692541490734, 2.65668617256209e-16],
+            "log_intensity": [4.566912481481912, 3.6309988916989457, 2.3296726676685333, -30.892584501572145],
+            "frac_light_beyond": [0.07163715925955165, 0.1342420219244714, 0.05791604213910863, 8.497949630178678e-17],
+            "m_rhalf": [2.5614774242529035, 3.1123483866471715, 5.303467907041009, 9.620430613438675],
+            "m_reff": [3.549254994621314, 4.310448970241789, 7.286386375403463, 13.335349341731202],
+        },
+        "analytic": {
+            "p_sbw": [0.5537497144507229, 0.36265670776412734, 0.08359357778515004, 2.7507384579572297e-18],
+            "log_intensity": [3.5600285586868274, 3.136772431153756, 1.669282449380221, -36.28359123612149],
+            "frac_light_beyond": [0.018004201485103923, 0.07987672528197443, 0.06636620651366582, 4.500541368885045e-19],
+            "m_rhalf": [3.549254994621314, 4.310448970241789, 7.286386375403463, 13.335349341731202],
+            "m_reff": [3.549254994621314, 4.310448970241789, 7.286386375403463, 13.335349341731202],
+        },
+    }
+    for profile, cols in expected.items():
+        t = A.compute_association(make_cands(rows), RA0, DEC0, "r", profile=profile)
+        assert list(t["objectId"]) == [1000, 1001, 1003, 1002]
+        for k, v in cols.items():
+            assert np.allclose(np.asarray(t[k], float), v, rtol=1e-9, atol=0), (profile, k)

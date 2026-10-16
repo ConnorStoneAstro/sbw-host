@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.0 (2026-10-16)
+
+- New table-free core, `sbw_host.core`: `sbw_exponential`, `sbw_sersic` and
+  `sbw_model` evaluate SBW for one transient against hosts given as plain arrays
+  (positions, half-light radius or scale length, total flux or `i_eff` / `i_0`,
+  axis ratio, position angle), with `sbw_probabilities` separated out so priors can
+  be added before normalising.  `compute_association` now calls this core; its
+  outputs are unchanged (regression test to 1e-9).
+- New model-free variant, `sbw_host.stamps.sbw_stamps`: SBW from deblended host
+  stamps of any sizes, placed by their `[0, 0]`-pixel origins or by per-stamp WCS,
+  with a `box` x `box` mean around the transient for the hostless indicator.
+- Version bumped to 0.2.0; Python >= 3.12.
+
 ## 0.1.0 (2026-10-14)
 
 First packaged release, collecting the work done against Rubin DP2 in October 2026.

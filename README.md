@@ -210,6 +210,67 @@ top host, downloads a cutout for each and marks the transient, the SBW-ranked
 hosts and the DLR host. `--include-dlr-none` also samples rows where DLR finds no
 host; `--full` re-runs the association and draws the complete diagnostic figure.
 
+## SBW on your own data
+
+The SBW evaluation itself does not depend on the Rubin tables. `sbw_host.core`
+exposes it for any catalogue or mock data: give one transient position and the
+hosts as plain arrays in a common flat frame (any one length unit), and get back
+the per-host intensities, probabilities and hostless indicator.
+
+```python
+import numpy as np
+from sbw_host import sbw_exponential, sky_to_plane
+
+# hosts from any table: positions, half-light radius, total flux, axis ratio, PA
+x, y = sky_to_plane(host_ra, host_dec, sn_ra, sn_dec)      # arcsec about the transient (+x West, +y North)
+res = sbw_exponential(0.0, 0.0, x, y, r_eff=rhalf_arcsec, flux=flux, q=axis_ratio, phi=pa_deg + 90)
+res.p_sbw               # I_i / sum_j I_j
+res.frac_light_beyond   # fraction of each host's light fainter than the transient position
+res.best                # index of the most probable host (None if every intensity is zero)
+```
+
+- `sbw_exponential` is Sérsic n = 1; `sbw_sersic(..., n=...)` takes any index and
+  `sbw_model` is the general form. Give exactly one size (`r_eff` half-light
+  radius, or `r_scale` scale length) and one amplitude (`flux` total, `i_eff` at
+  the half-light radius, or `i_0` central), each a scalar or one value per host.
+- `phi` is the major-axis angle in degrees from +x toward +y; `q` is the axis
+  ratio. Both default to a round host.
+- `profile="analytic"` (default) is a true Sérsic profile; `profile="mixture"` is
+  the 4-Gaussian approximation MultiProFit fits in the Rubin pipeline. In both
+  cases `r_eff` is the real half-light radius (Rubin's catalogue `reff` is
+  `r_eff / 1.386`).
+- Probabilities are normalised over the hosts you pass, so the candidate list is
+  yours to choose. To drop a host, set its flux to zero. To experiment with
+  weighted variants, add log-priors to `res.log_intensity` and renormalise with
+  `sbw_probabilities`.
+
+`compute_association` is built on this core, so the Rubin tool and the plain
+functions give identical numbers for identical parameters.
+
+### From deblended stamps
+
+`sbw_stamps` runs the same idea without any profile model, using a 2-D image of
+each candidate host (for example deblender outputs). Stamps may have different
+sizes; each is placed by the common-frame pixel coordinate of its `[0, 0]`
+element, the bounding-box corner convention of LSST footprints, or by its own
+WCS with the transient given in RA/Dec.
+
+```python
+from sbw_host import sbw_stamps
+
+res = sbw_stamps(tx, ty, stamps, origins=[(x0, y0), ...], interp="bilinear", box=3)
+```
+
+The intensity is read at the transient position by bilinear interpolation
+(`interp="nearest"` or `"box"` are alternatives). The hostless indicator is the
+fraction of each stamp's flux in pixels fainter than the mean of the `box x box`
+pixels around the transient; the default 3x3 keeps a single faint or noisy pixel
+from dominating, and `box=1` uses the pixel itself. A transient outside a stamp's
+footprint gets zero intensity from that host, and negative pixels are clipped to
+zero. All stamps must share one band and zero point. Deblender *model* stamps are
+the intended input: on noisy data stamps the clipped noise adds flux to the faint
+pixels and biases `frac_light_beyond` upward.
+
 ## Examples and tests
 
 `examples/` contains the scripts used during development: real-data cases

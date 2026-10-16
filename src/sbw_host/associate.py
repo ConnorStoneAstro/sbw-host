@@ -18,6 +18,7 @@ import numpy as np
 from astropy.table import Table
 from scipy.special import logsumexp
 
+from . import core as CORE
 from . import sersic as S
 from . import sersic_mix as SM
 from . import dlr as DLR
@@ -289,25 +290,17 @@ def compute_association(cands: Table, ra: float, dec: float, band: str,
         good &= ~suspect
 
     du, dv = S.sky_offsets(ra, dec, cra, cdec)
-    m = S.elliptical_radius(du, dv, reff_x, reff_y, rho)   # in units of catalogue reff
-    if profile == "mixture":
-        hl = SM.half_light_factor(nser)                       # R_half / sersic_reff
-        with np.errstate(divide="ignore", invalid="ignore"):
-            log_i = SM.log_intensity(m, flux, major, minor, nser)
-            f_beyond = SM.frac_light_beyond(m, nser)
-    elif profile == "analytic":
-        hl = np.ones_like(nser)
-        with np.errstate(divide="ignore", invalid="ignore"):
-            log_i = S.log_sersic_intensity(m, flux, major, minor, nser)
-            f_beyond = S.frac_light_beyond(m, nser)
-    else:
+    if profile not in CORE.PROFILES:
         raise ValueError("profile must be 'mixture' or 'analytic'")
-    log_i = np.where(good, log_i, -np.inf)
-
-    if np.any(np.isfinite(log_i)):
-        p_sbw = np.exp(log_i - logsumexp(log_i[np.isfinite(log_i)]))
-    else:
-        p_sbw = np.full(len(cands), np.nan)
+    hl = SM.half_light_factor(nser) if profile == "mixture" else np.ones_like(nser)   # R_half / sersic_reff
+    # The table-free core does the SBW evaluation; it takes true half-light radii, so
+    # scale the catalogue reff (a mixture scale parameter) by ``hl``.  Hosts failing the
+    # cuts get zero flux, which the core turns into zero probability.
+    core = CORE.sbw_model(0.0, 0.0, -du, -dv, r_eff=np.where(good, major * hl, 1.0),
+                          flux=np.where(good, flux, 0.0), n=np.where(good, nser, 1.0),
+                          q=minor / major, phi=phi, profile=profile)
+    m = core.m * hl            # elliptical radius in units of catalogue reff
+    log_i, f_beyond, p_sbw = core.log_intensity, core.frac_light_beyond, core.p_sbw
 
     out = Table()
     out["objectId"] = np.asarray(cands["objectId"])
